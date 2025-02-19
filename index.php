@@ -1,7 +1,22 @@
-<?php require_once 'functions.php'; ?>
+<?php
+session_start();
+require_once './functions.php';
+
+if (isset($_GET['length']) && is_numeric($_GET['length'])) {
+    $length = (int) $_GET['length'];
+
+    if ($length >= 4 && $length <= 30) {
+        $_SESSION['generated_password'] = generatePassword($length);
+        header("Location: result.php");
+        exit();
+    } else {
+        $error = "Errore: La lunghezza deve essere compresa tra 4 e 30 caratteri.";
+    }
+}
+?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 
 <head>
     <meta charset="UTF-8">
@@ -27,20 +42,9 @@
             </div>
         </form>
 
-        <?php
-
-        if (isset($_GET['length']) && is_numeric($_GET['length'])) {
-            $length = (int) $_GET['length'];
-
-            if ($length >= 4 && $length <= 30) {
-                $generatedPassword = generatePassword($length);
-                echo "<div class='alert alert-success'><strong>Password Generata:</strong> $generatedPassword</div>";
-            } else {
-                echo "<div class='alert alert-danger'>Errore: La lunghezza deve essere compresa tra 4 e 30 caratteri.</div>";
-            }
-        }
-        ?>
-
+        <?php if (isset($error)) : ?>
+            <div class='alert alert-danger'><?php echo $error; ?></div>
+        <?php endif; ?>
     </div>
 </body>
 

@@ -11,4 +11,4 @@ function generatePassword($length)
     }
 
     return $password;
-}
+};
