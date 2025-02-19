@@ -1,0 +1,47 @@
+<?php require_once 'functions.php'; ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Password generator</h1>
+
+        <form method="GET" class="mb-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="length" class="form-label">Lunghezza della password:</label>
+                    <input type="number" class="form-control" name="length" id="length" min="4" max="30" required
+                        value="<?php echo isset($_GET['length']) ? $_GET['length'] : ''; ?>">
+                </div>
+                <div class="col-md-6 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">Genera Password</button>
+                </div>
+            </div>
+        </form>
+
+        <?php
+
+        if (isset($_GET['length']) && is_numeric($_GET['length'])) {
+            $length = (int) $_GET['length'];
+
+            if ($length >= 4 && $length <= 30) {
+                $generatedPassword = generatePassword($length);
+                echo "<div class='alert alert-success'><strong>Password Generata:</strong> $generatedPassword</div>";
+            } else {
+                echo "<div class='alert alert-danger'>Errore: La lunghezza deve essere compresa tra 4 e 30 caratteri.</div>";
+            }
+        }
+        ?>
+
+    </div>
+</body>
+
+</html>
